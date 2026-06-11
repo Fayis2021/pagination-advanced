@@ -1,5 +1,5 @@
 name: pagination_advanced
-description: "An advanced pagination package for Flutter."
+description: Advanced pagination solution for Flutter with refresh, search, filters, and infinite scrolling.
 version: 1.0.0
 
 environment:
