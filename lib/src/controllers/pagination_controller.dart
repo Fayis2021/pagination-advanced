@@ -5,11 +5,25 @@ import '../models/pagination_state.dart';
 
 enum PaginationType { page, cursor }
 
+/// Signature for the data fetching function.
+/// Receives a [PaginationQuery] and returns a [PaginationResult].
 typedef FetchData<T> = Future<PaginationResult<T>> Function(PaginationQuery query);
 
+/// A controller that manages the state of a paginated list.
+///
+/// It handles loading initial data, fetching more pages as the user scrolls,
+/// refreshing the list, searching, and filtering.
+///
+/// Use this if you need to control the pagination from outside the widget
+/// (e.g. to trigger a search from a text field in the AppBar).
 class PaginationController<T> extends ValueNotifier<PaginationState<T>> {
+  /// The function used to fetch data.
   final FetchData<T> fetch;
+
+  /// The type of pagination (page-based or cursor-based).
   final PaginationType type;
+
+  /// The first page number to load. Defaults to 1.
   final int initialPage;
 
   late PaginationQuery _currentQuery;
@@ -32,6 +46,9 @@ class PaginationController<T> extends ValueNotifier<PaginationState<T>> {
     }
   }
 
+  /// Loads the first page of data.
+  ///
+  /// Resets the current items and sets the status to [PaginationStatus.initialLoading].
   Future<void> loadInitial() async {
     value =
         value.copyWith(status: PaginationStatus.initialLoading, error: null);
@@ -50,6 +67,9 @@ class PaginationController<T> extends ValueNotifier<PaginationState<T>> {
     }
   }
 
+  /// Fetches the next page of data.
+  ///
+  /// Does nothing if a load is already in progress or if there are no more items.
   Future<void> fetchMore() async {
     if (value.status == PaginationStatus.loadingMore ||
         value.status == PaginationStatus.initialLoading ||
@@ -84,6 +104,7 @@ class PaginationController<T> extends ValueNotifier<PaginationState<T>> {
     }
   }
 
+  /// Resets the pagination to the first page and reloads.
   Future<void> refresh() async {
     _currentQuery = _currentQuery.copyWith(
       page: type == PaginationType.page ? initialPage : null,
@@ -92,6 +113,7 @@ class PaginationController<T> extends ValueNotifier<PaginationState<T>> {
     await loadInitial();
   }
 
+  /// Retries the last failed request.
   Future<void> retry() async {
     if (value.items.isEmpty) {
       await loadInitial();
@@ -100,11 +122,13 @@ class PaginationController<T> extends ValueNotifier<PaginationState<T>> {
     }
   }
 
+  /// Updates the search query and refreshes the list.
   void search(String query) {
     _currentQuery = _currentQuery.copyWith(searchQuery: query);
     refresh();
   }
 
+  /// Updates the filters and refreshes the list.
   void applyFilter(Map<String, dynamic> filters) {
     _currentQuery = _currentQuery.copyWith(filters: filters);
     refresh();
