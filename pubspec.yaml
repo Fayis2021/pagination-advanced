@@ -1,6 +1,6 @@
 name: pagination_advanced
 description: Advanced pagination solution for Flutter with refresh, search, filters, and infinite scrolling.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/Fayis2021/pagination-advanced
 
 environment:
