@@ -24,8 +24,7 @@ A powerful Flutter pagination package with built-in infinite scrolling, pull-to-
 
 ## Demo
 
-<img src="https://your-demo-url/demo.gif" width="400"/>
-
+<img src="https://raw.githubusercontent.com/Fayis2021/pagination-advanced/example/docs/demo.mov" style="width:400px;height:450px;">
 ---
 
 ## 🚀 Installation
